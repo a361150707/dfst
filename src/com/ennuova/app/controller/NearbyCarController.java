@@ -199,4 +199,48 @@ public class NearbyCarController extends GeneralControl{
 		}
 	}
 	
+	@RequestMapping(params="method=testGitAdd",method=RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "测试批量插入数据库", notes="{cusId:登录用户的id,defCarId:默认车id}")
+	public void testGitAdd(@ApiParam(value="输入{cusId:登录用户的id,defCarId:默认车id}")String params,HttpServletResponse response){	
+		AppObjectResult appObjectResult = null;
+		try {
+			long startTime=System.currentTimeMillis();
+//			String getParams = Util.aesDecrypt(params);
+//			Map<String, Object> jsonMap = CommonClass.getMapByJson(getParams);
+//			String cusId = jsonMap.get("cusId")+"".trim();//登录id
+//			String defCarId = jsonMap.get("defCarId")+"".trim();//登录用户的默认车辆id
+			Integer cusId = 20001;//登录id
+			float lng = 118.02F;
+			float lat = 20.20F;
+			String cusPhoto = "12345456sss";
+			String defCarId = "430".trim();//登录用户的默认车辆id
+			if(StringUtil.isnotObjectsNotEmpty(cusId,defCarId)){
+				List<TestInsert> testInserts = new ArrayList<TestInsert>();
+				TestInsert testInsert = null;
+				for(int i=0;i<1000;i++){
+					testInsert = new TestInsert();
+					testInsert.setCusId(cusId+i);
+					testInsert.setLng(lng+i);
+					testInsert.setLat(lat+i);
+					testInsert.setCreatetime(new Date());
+					testInsert.setCusPhoto(cusPhoto+i);
+					testInserts.add(testInsert);
+//					carInfoService.saveOne(testInsert);
+				}
+				carInfoService.testSaveBatch(testInserts, 50);
+				appObjectResult = new AppObjectResult(SystemInfo.QUERY_SUCCESS.getCode(), SystemInfo.QUERY_SUCCESS.getMsg());
+			}else{
+				appObjectResult = new AppObjectResult(SystemInfo.ILLEGAL_PARAMETER.getCode(), SystemInfo.ILLEGAL_PARAMETER.getMsg(),"请登录!");
+			}
+			sendDataResponse(response,JSONUtil.getJSONString(appObjectResult));
+			long endTime=System.currentTimeMillis();
+			float excTime=(float)(endTime-startTime)/1000;
+			System.out.println("执行时间："+excTime+"s");
+		} catch (Exception e) {
+			logger.error("附近的车控制类_查询我的车信息:"+e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 }
