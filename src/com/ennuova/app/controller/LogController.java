@@ -57,7 +57,6 @@ public class LogController {
 		String pwd= jsonMap.get("password")+"";
 //		String mobile = "15959279267";
 //		String pwd= "123456";
-//		String loginIp = getIpAddr(request);
 		long khID=pubCustomerService.validate(mobile, pwd);
 		PubCustomer memInfo = new PubCustomer();
         if(khID !=-1){
