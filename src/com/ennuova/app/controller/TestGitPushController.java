@@ -29,64 +29,16 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 
 @Controller
-@RequestMapping("/nearbyCarController2")
+@RequestMapping("/testGitPushController")
 @Api(value="", description="附近的车")
-public class NearbyCarController2 extends GeneralControl{
-	private static Logger logger = Logger.getLogger(NearbyCarController2.class);
+public class TestGitPushController extends GeneralControl{
+	private static Logger logger = Logger.getLogger(TestGitPushController.class);
 
 	/**
 	 * 车辆的服务
 	 */
 	@Resource
 	private CarInfoService carInfoService;
-	
-	/**
-	 * 附近的车列表
-	 * @author sududa
-	 * @date 2016年11月7日
-	 */
-	@RequestMapping(params="method=doList",method=RequestMethod.POST)
-	@ResponseBody
-	@ApiOperation(value = "附近的车列表", notes="{page:当前页(默认值为1),rows:每页显示的条数(默认值为10),cusId:登录用户的id,defCarId:默认车id,cusInterest:客户兴趣标签,cusNick:客户昵称,lineName:车系名称,lng:经度,lat:纬度,sex:性别(1_男,2_女)}")
-	public void doList(@ApiParam(value="输入{page:当前页(默认值为1),rows:每页显示的条数(默认值为10),cusId:登录用户的id,defCarId:默认车id,cusInterest:客户兴趣标签,cusNick:客户昵称,lineName:车系名称,lng:经度,lat:纬度,sex:性别(1_男,2_女)}")String params,HttpServletResponse response){	
-		AppObjectResult appObjectResult = null;
-		try {
-			String getParams = Util.aesDecrypt(params);
-			Map<String, Object> jsonMap = CommonClass.getMapByJson(getParams);
-			String loginId = jsonMap.get("cusId")+"".trim();//登录id
-			String defCarId = jsonMap.get("defCarId")+"".trim();//登录用户的默认车辆id
-			String getPage = jsonMap.get("page")+"".trim();//当前页(默认值为1)
-			String getRows = jsonMap.get("rows")+"".trim();//每页显示的条数(默认值为10)
-			Integer page = 1;
-			Integer rows = 10;
-			if(StringUtil.isNotEmpty(getPage)){
-				page = Integer.valueOf(getPage);
-			}
-			if(StringUtil.isNotEmpty(getRows)){
-				rows = Integer.valueOf(getRows);
-			}
-//			String loginId = "990".trim();//登录id
-//			String defCarId = "1027".trim();//登录用户的默认车辆id
-//			CarLocation carLocation = new CarLocation();
-//			carLocation.setCusId(Integer.valueOf(loginId));
-//			carLocation.setDefCarId(defCarId);
-//			carLocation.setLineName("宝马5系");
-//			carLocation.setLng(118.10F);
-//			carLocation.setLat(24.46F);
-//			carLocation.setSex(1);
-			if(StringUtil.isnotObjectsNotEmpty(loginId,defCarId)){
-				CarLocation carLocation = JsonUtils.toObject(getParams, CarLocation.class);
-				List<Map<String, Object>> resultList = carInfoService.doList(page,rows,carLocation,defCarId);
-				appObjectResult = new AppObjectResult(SystemInfo.QUERY_SUCCESS.getCode(), SystemInfo.QUERY_SUCCESS.getMsg(),resultList);
-			}else{
-				appObjectResult = new AppObjectResult(SystemInfo.ILLEGAL_PARAMETER.getCode(), SystemInfo.ILLEGAL_PARAMETER.getMsg(),"请登录!");
-			}
-			sendDataResponse(response,JSONUtil.getJSONString(appObjectResult));
-		} catch (Exception e) {
-			logger.error("附近的车列表控制类:_附近的车列表"+e.getMessage());
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * 清除车辆位置信息并退出
