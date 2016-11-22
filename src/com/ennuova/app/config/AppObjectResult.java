@@ -1,6 +1,8 @@
 package com.ennuova.app.config;
 
 import java.util.List;
+
+import com.ennuova.app.config.AppResult;
 /**
  * @author jimmy(王志明)
  *2016年4月19日
