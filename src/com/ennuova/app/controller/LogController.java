@@ -83,10 +83,13 @@ public class LogController {
 		ob.put("isSearchTel", memInfo.getIsSearchTel());
 		ob.put("LINENAME", memInfo.getLineName());
 		List<Map<String, Object>> contactsList = null;
+		List<Map<String, Object>> followList = null;
 		if(StringUtil.isNotEmpty(memInfo.getId())){
 			contactsList = pubContactsService.doContactsList(memInfo.getId()+"");
+			followList = pubContactsService.doFollowList(memInfo.getId()+"");
 		}
 		ob.put("contactsList", contactsList);
+		ob.put("followList", followList);
 		/*ob.put("carId", info.getId());
 		ob.put("boxId", info.getBoxId());
 		ob.put("boxFxlh", info.getFxlh());*/
